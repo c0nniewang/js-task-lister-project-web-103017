@@ -14,7 +14,7 @@
     <form id="create-list-form" action="#" method="post">
       <label for="new-list-title">Add a new list:</label>
       <input type="text" id="new-list-title" name="new-list-title" placeholder="title">
-      <input type="submit" value="Create New List">
+      <input type="submit" id="button-create-list-form" value="Create New List">
     </form><!-- #create-list-form -->
 
     <form id="create-task-form" action="#" method="post">
@@ -24,7 +24,7 @@
       <input type="text" id="new-task-description" name="new-task-description" placeholder="description">
       <label for="new-task-priority">Priority level:</label>
       <input type="text" id="new-task-priority" name="new-task-priority" placeholder="priority">
-      <input type="submit" value="Create New Task">
+      <input type="submit" value="Create New Task" id="button-create-new-task">
     </form><!-- #create-task-form -->
 
     <section id="lists"></section>
@@ -32,6 +32,7 @@
 
     <script src="src/task.js"></script>
     <script src="src/list.js"></script>
+    <script src="src/index.js"></script>
   </div><!-- #main-content -->
 </body>
 </html>
