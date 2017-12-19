@@ -1,12 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+  loadExisting()
+    
+  document.getElementById("button-create-list-form").addEventListener("click", createList)
+    
+  document.getElementById("lists").addEventListener("click", deleteList)
 
-loadExisting()
-  
-document.getElementById("button-create-list-form").addEventListener("click", createList)
-  
-document.getElementById("lists").addEventListener("click", deleteList)
-
-document.getElementById("button-create-new-task").addEventListener("click", addTask)
+  document.getElementById("button-create-new-task").addEventListener("click", addTask)
 
 });
 
@@ -15,8 +14,7 @@ function loadExisting() {
     .then(function(resp) {return resp.json() })
     .then(function(json) {
       json.forEach(function(listDb) {
-        createListDiv(listDb)
-        createListInfo(listDb)
+        timList(listDb)
         let loadList = new List(listDb.title, listDb.id)
     })
   }).then(() => {
@@ -35,30 +33,6 @@ function loadExisting() {
   })
 }
 
-function createListDiv(newList) {
-  let list = document.createElement('div')
-  list.className = "list"
-  list.id = `${newList.id}`
-  document.getElementById("lists").appendChild(list)
-
-  let deleteButton = document.createElement('button')
-  deleteButton.className = "delete-list"
-  deleteButton.innerText = "X"
-  deleteButton.id = `${list.id} button`
-  document.getElementById(list.id).appendChild(deleteButton)
-}
-
-function createListInfo(list) {
-  let h = document.createElement("H2")
-  h.innerText = list.title
-  document.getElementById(list.id).appendChild(h)
-  let title = list.title
-  let optionNew = document.createElement("option")
-  optionNew.text = title
-  optionNew.id = `${list.id} option`
-  document.getElementById("parent-list").appendChild(optionNew)
-}
-
 function timList(newList) {
   let list = document.createElement('div')
   list.className = "list"
@@ -68,7 +42,7 @@ function timList(newList) {
   let deleteButton = document.createElement('button')
   deleteButton.className = "delete-list"
   deleteButton.innerText = "X"
-  deleteButton.id = `${list.id} button`
+  deleteButton.id = `button ${list.id}`
   document.getElementById(list.id).appendChild(deleteButton)
 
   let h = document.createElement("H2")
@@ -77,7 +51,7 @@ function timList(newList) {
 
   let optionNew = document.createElement("option")
   optionNew.text = newList.title
-  optionNew.id = `${list.id} option`
+  optionNew.id = `option ${list.id}`
   document.getElementById("parent-list").appendChild(optionNew) 
 }
 
@@ -85,29 +59,6 @@ function createList(event) {
   event.preventDefault()
   
   let title = document.getElementById("new-list-title").value;
-
-  
-  // createListDiv(newList)
-  // createListInfo(newList)
-  // let list = document.createElement('div')
-  // list.className = "list"
-  // list.id = `${newList.id}`
-  // document.getElementById("lists").appendChild(list)
-
-  // let deleteButton = document.createElement('button')
-  // deleteButton.className = "delete-list"
-  // deleteButton.innerText = "X"
-  // deleteButton.id = `${list.id} button`
-  // document.getElementById(list.id).appendChild(deleteButton)
-
-  // let h = document.createElement("H2")
-  // h.innerText = title
-  // document.getElementById(list.id).appendChild(h)
-
-  // let optionNew = document.createElement("option")
-  // optionNew.text = title
-  // optionNew.id = `${list.id} option`
-  // document.getElementById("parent-list").appendChild(optionNew) 
 
   fetch('http://localhost:3000/api/v1/lists', {
     method: 'POST',
@@ -124,12 +75,12 @@ function createList(event) {
 
 function deleteList(event) {
   if (event.target.className === "delete-list")  {
-    let targetId = event.target.id[0]
+    let targetId = event.target.id.slice(7)
 
     let listToDelete = document.getElementById(`${targetId}`)
     listToDelete.parentNode.removeChild(listToDelete)
 
-    let optionToDelete = document.getElementById(`${targetId} option`)
+    let optionToDelete = document.getElementById(`option ${targetId}`)
     optionToDelete.parentNode.removeChild(optionToDelete)
 
     let target = store.lists.find(function(el) {
