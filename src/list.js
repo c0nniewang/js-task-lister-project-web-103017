@@ -2,18 +2,17 @@
 list is responsible for creating a single list component
 */
 const List = (() => {
-  let id = 1
-  let all = []
+  // let id = 1
   return class List {
-    constructor(title) {
-      this.id = id++;
+    constructor(title, id) {
+      this.id = id;
       this.title = title;
       this.tasks = [];
-      all.push(this)
+      store.lists.push(this);
     }
 
     static all() {
-      return all
+      return store.lists
     }
   }
 
